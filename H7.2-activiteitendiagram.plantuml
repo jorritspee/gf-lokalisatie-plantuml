@@ -1,0 +1,17 @@
+@startuml
+|Radioloog|
+start
+:1. Opent het patiëntdossier in het XIS;
+|Zorginformatiesysteem|
+:2a. Vraagt pseudoniem aan;
+|PRS|
+:2b. Levert pseudonimiem;
+|Zorginformatiesysteem|
+:3. Vraagt lokalisatierecords op;
+|NVI|
+:4. Levert lokalisatierecords op; 
+|Zorginformatiesysteem|
+:5. Toont data-aanbieders die beelden hebben.;
+|Radioloog|
+stop
+@enduml

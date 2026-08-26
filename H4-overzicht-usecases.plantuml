@@ -1,0 +1,10 @@
+@startuml
+package "Generieke Functie Lokalisatie" {
+  usecase "UC-GFL-01. \nRegistreren lokalisatierecord" as UCGGL01
+  usecase "UC-GFL-02. \nOpvragen lokalisatierecords" as UCGGL02
+
+}
+
+:Data-aanbieder: -right-> UCGGL01
+:Eindgebruiker: -right-> UCGGL02
+@enduml

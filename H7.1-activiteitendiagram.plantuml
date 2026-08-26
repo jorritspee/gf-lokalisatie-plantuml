@@ -1,0 +1,14 @@
+@startuml
+|Radioloog|
+start
+:1. Voert een CT-scan uit;
+|Zorginformatiesysteem|
+:2a. Vraagt pseudoniem aan;
+|PRS|
+:2b. Levert pseudonimiem;
+|Zorginformatiesysteem|
+:3. Registreert lokalisatierecord;
+|NVI|
+:4. Het lokalisatierecord is nu opvraagbaar \nvoor andere zorgverleners.;
+stop
+@enduml
