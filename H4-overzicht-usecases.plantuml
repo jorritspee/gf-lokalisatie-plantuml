@@ -1,10 +1,16 @@
-@startuml
+@startuml usecases
+left to right direction
+actor "Data-aanbieder" as DataAanbieder
 package "Generieke Functie Lokalisatie" {
-  usecase "UC-GFL-01. \nRegistreren lokalisatierecord" as UCGGL01
-  usecase "UC-GFL-02. \nOpvragen lokalisatierecords" as UCGGL02
-
+  usecase "UC-GFL-04. \nVerwijderen van lokalisatierecords" as UCGFL04
+  usecase "UC-GFL-03. \nOpvragen van eigen lokalisatierecords" as UCGFL03
+  usecase "UC-GFL-02. \nOpvragen lokalisatierecords" as UCGFL02
+  usecase "UC-GFL-01. \nRegistreren lokalisatierecord" as UCGFL01
 }
+actor "Eindgebruiker" as Eindgebruiker
 
-:Data-aanbieder: -right-> UCGGL01
-:Eindgebruiker: -right-> UCGGL02
+:DataAanbieder: -down-> UCGFL01
+:Eindgebruiker: -up-> UCGFL02
+:DataAanbieder: -down-> UCGFL03
+:DataAanbieder: -down-> UCGFL04
 @enduml
