@@ -1,0 +1,59 @@
+@startuml
+!include ../publish/plantuml-style.puml
+title UC-03. Lokaliseren van gegevens
+
+actor "Zorgverlener" as ZV
+participant "XIS\n(lokalisatieclient)" as XIS
+participant "PRS" as PRS
+participant "NVI" as NVI
+participant "GF Adressering" as ADR
+participant "Bronhouder\n(zorgaanbieder-endpoint)" as BRON
+
+ZV -> XIS: opent dossier,\nkiest datacategorie
+activate XIS
+
+XIS -> PRS: vraag pseudoniem\n(BSN, datacategorie)
+activate PRS
+PRS --> XIS: pseudoniem
+deactivate PRS
+
+XIS -> NVI: lokaliseer (pseudoniem,\noptioneel filter op type zorgaanbieder)
+activate NVI
+
+note over NVI
+  De NVI controleert of de raadpleger
+  een aangesloten zorgaanbieder is.
+end note
+
+alt registraties gevonden
+  NVI --> XIS: lijst bronhouders
+  deactivate NVI
+  XIS --> ZV: toon gevonden bronhouders
+
+  group Vervolgstappen tot en met het resultaatscherm
+    XIS -> ADR: zoek endpoints op\n(gedelegeerd aan GF Adressering)
+    activate ADR
+    ADR --> XIS: endpoints per bronhouder
+    deactivate ADR
+
+    loop per gevonden bronhouder
+      XIS -> BRON: haal (meta)gegevens op met BSN\n(FHIR-URL)
+      activate BRON
+      BRON --> XIS: (meta)gegevens
+      deactivate BRON
+    end
+
+    note over XIS, BRON
+      De bronbevraging gaat met het BSN, niet met
+      het pseudoniem: dat is uitsluitend bedoeld
+      voor de NVI en buiten die context betekenisloos.
+    end note
+
+    XIS --> ZV: toon gegevens per zorgaanbieder
+  end
+
+else geen registraties
+  XIS --> ZV: leeg resultaat
+end
+deactivate XIS
+@enduml

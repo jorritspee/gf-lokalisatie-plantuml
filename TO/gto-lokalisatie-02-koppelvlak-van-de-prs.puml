@@ -1,0 +1,20 @@
+@startuml
+!include <archimate/Archimate>
+!include ../publish/plantuml-style.puml
+title Koppelvlak van de PRS
+
+skinparam nodesep 22
+skinparam ranksep 38
+
+Application_Component(client, "Lokalisatieclient")
+
+rectangle "Pseudoniemenregistratieservice" as prs {
+  Application_Interface(oauth, "OAuth 2.0\ntoken-endpoint")
+  Application_Interface(api, "Evaluate-endpoint\n(REST)")
+}
+
+Rel_Serving(oauth, client, "access token")
+Rel_Serving(api, client, "leidt pseudoniem af")
+
+Lay_D(client, prs)
+@enduml

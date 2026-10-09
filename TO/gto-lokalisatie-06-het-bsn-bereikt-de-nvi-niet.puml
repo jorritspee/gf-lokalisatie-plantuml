@@ -1,0 +1,35 @@
+@startuml
+!include ../publish/plantuml-style.puml
+title Het BSN bereikt de NVI niet
+
+participant "Lokalisatie-\nclient" as C
+participant "PRS" as P
+participant "NVI" as N
+
+note over C
+  Kent het BSN uit
+  het dossier
+end note
+
+C -> C: blindeer BSN + datacategorie\n(bewaar blinderingsfactor)
+C -> P: geblindeerde waarde
+note right of P
+  Ziet een geblindeerde
+  waarde, niet het BSN
+end note
+P -> P: reken met geheime sleutel
+P -> C: resultaat, versleuteld\nvoor de NVI
+note left of C
+  Kan het resultaat
+  niet openen
+end note
+C -> N: versleuteld resultaat\n+ blinderingsfactor
+N -> N: ontsleutel en ontblind\ntot pseudoniem
+note right of N
+  Ziet een pseudoniem dat geldt
+  voor deze patiënt én deze
+  datacategorie, niet het BSN
+end note
+N -> N: hash via HSM
+N -> N: sla hash op
+@enduml

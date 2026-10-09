@@ -1,0 +1,42 @@
+@startuml
+!include <archimate/Archimate>
+!include ../publish/plantuml-style.puml
+title Systeemlandschap GF Lokalisatie
+
+skinparam nodesep 25
+skinparam ranksep 35
+
+rectangle "Bij de raadplegende zorgaanbieder" as z {
+  Application_Component(xis, "XIS / ECD /\nPACS")
+  Application_Component(client, "Lokalisatie-\nclient")
+}
+
+rectangle "Landelijke voorzieningen" as l {
+  Application_Component(prs, "Pseudoniemen-\nregistratie-\nservice")
+  Application_Component(nvi, "Nationale\nVerwijsindex")
+}
+
+rectangle "Gedelegeerd aan een\nandere generieke functie" as g {
+  Application_Component(adressering, "GF\nAdressering")
+  Application_Component(autorisatie, "GF\nAutorisatie")
+}
+
+rectangle "Bij de bronhoudende zorgaanbieder" as b {
+  Application_Component(bronxis, "XIS / ECD / PACS\nvan de bronhouder")
+  Application_Interface(endpoint, "Zorgaanbieder-\nendpoint")
+}
+
+Rel_Composition(xis, client, "")
+Rel_Serving(client, prs, "vraagt\npseudoniem")
+Rel_Serving(client, nvi, "registreert,\nlokaliseert")
+Rel_Serving(adressering, client, "zoekt\nendpoints op")
+Rel_Serving(autorisatie, client, "autoriseert\nde vraag")
+Rel_Serving(autorisatie, nvi, "autoriseert")
+Rel_Serving(autorisatie, endpoint, "autoriseert")
+Rel_Serving(endpoint, client, "levert\n(meta)gegevens")
+Rel_Composition(bronxis, endpoint, "")
+
+Lay_D(xis, client)
+Lay_D(client, nvi)
+Lay_D(nvi, endpoint)
+@enduml

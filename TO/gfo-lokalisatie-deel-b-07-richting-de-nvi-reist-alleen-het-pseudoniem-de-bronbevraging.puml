@@ -1,0 +1,43 @@
+@startuml
+!include ../publish/plantuml-style.puml
+title Het BSN bereikt de NVI niet
+
+participant "Bronsysteem / XIS\n(bij de zorgaanbieder)" as XIS
+participant "PRS" as PRS
+participant "NVI" as NVI
+
+note over XIS
+  Kent het BSN. Stelt de patiënt vast
+  in het eigen dossier.
+end note
+
+XIS -> PRS: geblindeerd BSN\n+ datacategorie
+activate PRS
+note over PRS
+  Leidt het pseudoniem af.
+  Leert zelf niet welk BSN het betreft
+  en legt geen behandelrelatie vast.
+end note
+PRS --> XIS: resultaat, versleuteld\nvoor de NVI
+deactivate PRS
+note over XIS
+  Kan het resultaat niet openen
+  en ziet het pseudoniem dus niet.
+end note
+
+XIS -> NVI: versleuteld resultaat\n+ blinderingsfactor
+activate NVI
+note over NVI
+  Ontblindt tot het pseudoniem. Kent het
+  BSN niet, niet in het berichtenverkeer
+  en niet in de opslag.
+end note
+NVI --> XIS: lijst bronhouders (nooit het pseudoniem)
+deactivate NVI
+
+note over XIS
+  Bij de vervolgstappen bevraagt het XIS de
+  bronhouders wél met het BSN. Het pseudoniem
+  is alleen voor de NVI bedoeld.
+end note
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+!include <archimate/Archimate>
+!include ../publish/plantuml-style.puml
+title Koppelvlak van de NVI
+
+skinparam nodesep 22
+skinparam ranksep 38
+
+Application_Component(client, "Lokalisatieclient")
+
+rectangle "Nationale Verwijsindex" as nvi {
+  Application_Interface(oauth, "OAuth 2.0\ntoken-endpoint")
+  Application_Interface(api, "Registratie- en\nlokalisatie-API\n(FHIR)")
+}
+
+rectangle "Nog in te vullen" as extern {
+  Application_Component(gfautz, "GF Autorisatie")
+}
+
+Rel_Serving(oauth, client, "access token")
+Rel_Serving(api, client, "registreert,\nlokaliseert,\nverwijdert")
+Rel_Serving(gfautz, api, "autoriseert\nde vraag")
+
+Lay_D(client, nvi)
+Lay_R(nvi, extern)
+@enduml

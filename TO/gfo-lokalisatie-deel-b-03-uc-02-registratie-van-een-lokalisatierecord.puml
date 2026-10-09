@@ -1,0 +1,38 @@
+@startuml
+!include ../publish/plantuml-style.puml
+title UC-02. Registratie van een lokalisatierecord
+
+actor "Zorgverlener" as ZV
+participant "Bronsysteem\n(XIS / PACS)" as XIS
+participant "PRS" as PRS
+participant "NVI" as NVI
+
+ZV -> XIS: legt gegevens vast\n(bijv. onderzoek afgerond)
+activate XIS
+
+note over XIS
+  De bron stelt vast dat er toestemming is.
+  De NVI controleert dit niet zelf.
+end note
+
+XIS -> PRS: vraag pseudoniem\n(BSN, datacategorie)
+activate PRS
+PRS --> XIS: pseudoniem
+deactivate PRS
+
+XIS -> NVI: registreer (pseudoniem, URA,\nbronsysteem)
+activate NVI
+
+alt nog geen registratie
+  NVI --> XIS: registratie vastgelegd
+else registratie bestaat al
+  NVI --> XIS: bestaande registratie\n(geen duplicaat)
+end
+deactivate NVI
+deactivate XIS
+
+note over NVI
+  Het record is nu vindbaar voor
+  geautoriseerde raadplegers.
+end note
+@enduml

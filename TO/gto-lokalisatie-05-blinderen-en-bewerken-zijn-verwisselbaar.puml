@@ -1,0 +1,46 @@
+@startuml
+!include ../publish/plantuml-style.puml
+title Blinderen en bewerken zijn verwisselbaar
+
+skinparam nodesep 14
+skinparam ranksep 26
+skinparam rectangle {
+  BorderColor #BCCCDC
+  BackgroundColor #FAFCFE
+}
+
+rectangle "Zonder blindering: de PRS krijgt het BSN te zien" as A {
+  card "BSN" as a1 #FFE0E0
+  card "bewerking\nmet PRS-sleutel" as a2 #D6ECFA
+  card "pseudoniem" as a3 #E4F3E4
+  a1 -right-> a2
+  a2 -right-> a3
+}
+
+rectangle "Met blindering: de PRS krijgt het BSN niet te zien" as B {
+  rectangle "bij de raadplegende\nzorgaanbieder" as B1 {
+    card "BSN" as b1 #E4F3E4
+    card "blindeer" as b2 #E4F3E4
+  }
+  rectangle "bij de PRS" as B2 {
+    card "bewerking\nmet PRS-sleutel" as b3 #D6ECFA
+  }
+  rectangle "bij de NVI" as B3 {
+    card "ontblind" as b4 #E4F3E4
+    card "pseudoniem" as b5 #E4F3E4
+  }
+  b1 -right-> b2
+  b2 -right-> b3
+  b3 -right-> b4
+  b4 -right-> b5
+}
+
+note bottom of B
+  Blauw is wat de PRS doet en ziet, groen wat buiten de PRS blijft.
+  In beide gevallen voert de PRS dezelfde bewerking uit met dezelfde
+  sleutel en komt hetzelfde pseudoniem uit de keten. Het verschil zit
+  niet in de uitkomst maar in wat de PRS onderweg te zien krijgt.
+end note
+
+A -[hidden]down- B
+@enduml

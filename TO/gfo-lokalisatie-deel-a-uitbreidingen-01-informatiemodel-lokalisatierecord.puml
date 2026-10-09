@@ -1,0 +1,31 @@
+@startuml
+!include <archimate/Archimate>
+!include ../publish/plantuml-style.puml
+title Informatiemodel lokalisatierecord
+
+Business_Object(patient, "Patiënt")
+Business_Object(bronhouder, "Bronhouder\n(zorgaanbieder)")
+Application_DataObject(record, "Lokalisatierecord")
+Application_DataObject(pseudoniem, "Patiëntpseudoniem")
+Application_DataObject(ura, "URA")
+Application_DataObject(cat, "Datacategorie")
+Application_DataObject(systeem, "Registrerend systeem")
+
+Rel_Composition(record, pseudoniem, "1")
+Rel_Composition(record, ura, "1")
+Rel_Composition(record, systeem, "1")
+
+Rel_Realization(pseudoniem, patient, "verwijst naar,\nper datacategorie")
+Rel_Realization(ura, bronhouder, "identificeert")
+Rel_Association(pseudoniem, cat, "afgeleid uit")
+
+note bottom of record
+  De combinatie van bronhouder, patiëntpseudoniem en registrerend
+  systeem is uniek. Een record wordt niet gewijzigd: corrigeren is
+  verwijderen en opnieuw registreren.
+
+  Het pseudoniem wordt afgeleid uit het BSN én de datacategorie.
+  Eén patiënt heeft daardoor meerdere pseudoniemen in de NVI,
+  die onderling niet als bij elkaar horend herkenbaar zijn.
+end note
+@enduml

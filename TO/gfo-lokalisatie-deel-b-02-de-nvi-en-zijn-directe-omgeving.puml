@@ -1,0 +1,14 @@
+@startuml
+!include <archimate/Archimate>
+!include ../publish/plantuml-style.puml
+title Positie van de NVI
+
+Business_Process(reg, "Registreren")
+Business_Process(lok, "Lokaliseren")
+Application_Component(nvi, "Nationale Verwijsindex")
+Application_DataObject(record, "Lokalisatierecord\n(bron, pseudoniem,\nsysteem)")
+
+Rel_Serving(nvi, reg, "")
+Rel_Serving(nvi, lok, "")
+Rel_Access(nvi, record, "beheert")
+@enduml

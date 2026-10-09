@@ -1,0 +1,52 @@
+@startuml
+!include ../publish/plantuml-style.puml
+title Uitkomsten van een lokalisatievraag
+
+skinparam ActivityBackgroundColor #D6ECFA
+skinparam ActivityBorderColor #7BA7C7
+skinparam ActivityDiamondBackgroundColor #F8FAFC
+skinparam ActivityDiamondBorderColor #7BA7C7
+
+start
+:Zorgverlener stelt
+lokalisatievraag;
+
+if (PRS en NVI bereikbaar?) then (nee)
+  :Toon storing; <<#FFE0E0>>
+  note right
+    Niets bekend. Zorgproces gaat door;
+    directe uitwisseling blijft mogelijk.
+  end note
+  stop
+else (ja)
+endif
+
+if (Aansluiting geldig?) then (nee)
+  :Toon probleem
+  met de aansluiting; <<#FFF0D0>>
+  note right
+    Geen leeg resultaat: dat zou
+    misleidend zijn.
+  end note
+  stop
+else (ja)
+endif
+
+if (Registraties gevonden?) then (nee)
+  :Toon leeg resultaat;
+  stop
+else (ja)
+  :Toon gevonden bronhouders;
+
+  :Zoek endpoints op;
+  note right
+    Gedelegeerd aan GF Adressering.
+  end note
+  :Haal (meta)gegevens op
+  bij de bronhouders
+  (met BSN);
+  :Toon gegevens
+  per zorgaanbieder;
+  stop
+endif
+@enduml

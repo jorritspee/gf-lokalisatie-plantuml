@@ -1,0 +1,48 @@
+@startuml
+!include <archimate/Archimate>
+!include ../publish/plantuml-style.puml
+title Transacties binnen de lokalisatiefunctie
+
+skinparam nodesep 20
+skinparam ranksep 35
+
+rectangle "Lokalisatieclient" as GRP_C {
+  Application_Component(client, "Lokalisatie-\nclient")
+}
+
+rectangle "PRS" as GRP_P {
+  Application_Interface(if_prs, "PRS API")
+  Application_Service(svc_pseudo, "Pseudoniem\nafleiden")
+}
+
+rectangle "NVI" as GRP_N {
+  Application_Interface(if_nvi, "NVI API")
+  Application_Service(svc_reg, "Registreren\n(ITI-65)")
+  Application_Service(svc_loc, "Lokaliseren\n(ITI-66)")
+  Application_Service(svc_del, "Verwijderen")
+  Application_Service(svc_own, "Eigen registraties\nraadplegen")
+}
+
+rectangle "Bronhoudende zorgaanbieder" as GRP_B {
+  Application_Interface(if_bron, "Zorgaanbieder-\nendpoint (FHIR)")
+  Application_Service(svc_get, "(Meta)gegevens\nophalen")
+}
+
+Rel_Composition(if_prs, svc_pseudo, "")
+Rel_Composition(if_nvi, svc_reg, "")
+Rel_Composition(if_nvi, svc_loc, "")
+Rel_Composition(if_nvi, svc_del, "")
+Rel_Composition(if_nvi, svc_own, "")
+Rel_Composition(if_bron, svc_get, "")
+
+Rel_Serving(svc_pseudo, client, "")
+Rel_Serving(svc_reg, client, "")
+Rel_Serving(svc_loc, client, "")
+Rel_Serving(svc_del, client, "")
+Rel_Serving(svc_own, client, "")
+Rel_Serving(svc_get, client, "")
+
+Lay_D(GRP_C, GRP_P)
+Lay_D(GRP_P, GRP_N)
+Lay_D(GRP_N, GRP_B)
+@enduml
