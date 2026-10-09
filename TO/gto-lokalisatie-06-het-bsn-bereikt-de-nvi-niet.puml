@@ -11,7 +11,7 @@ note over C
   het dossier
 end note
 
-C -> C: blindeer BSN + datacategorie\n(bewaar blinderingsfactor)
+C -> C: blindeer BSN\n(nieuwe blinderingsfactor)
 C -> P: geblindeerde waarde
 note right of P
   Ziet een geblindeerde
@@ -26,9 +26,9 @@ end note
 C -> N: versleuteld resultaat\n+ blinderingsfactor
 N -> N: ontsleutel en ontblind\ntot pseudoniem
 note right of N
-  Ziet een pseudoniem dat geldt
-  voor deze patiënt én deze
-  datacategorie, niet het BSN
+  Ziet een pseudoniem dat alleen
+  binnen de NVI geldt,
+  niet het BSN
 end note
 N -> N: hash via HSM
 N -> N: sla hash op

@@ -1,0 +1,77 @@
+' Gedeelde, moderne stijl voor alle PlantUML/ArchiMate-diagrammen.
+' Overgenomen van de GTO-stijl uit de gfmodules-coordination-private/rela-docs,
+' met het font afgestemd op dit document (Fira Sans, zoals publish/pdf-header.tex).
+' Behoudt de ArchiMate layer-kleuren (application = blauw), maar maakt het beeld
+' platter, rustiger en goed leesbaar: hoge resolutie (scherp in de PDF), geen
+' schaduwen, groot lettertype (minder nadruk op het ArchiMate-icoon).
+skinparam dpi 300
+skinparam shadowing false
+' Groep-containers zijn plain rectangles (geen ArchiMate Grouping) omdat die
+' library-Grouping een niet-uitschakelbare cluster-schaduw houdt. We geven de
+' rectangles een gestippelde rand zodat ze de ArchiMate-grouping-look benaderen,
+' zonder schaduw.
+skinparam rectangle {
+  BorderStyle dashed
+  BorderColor #5B6B7B
+  BackgroundColor transparent
+}
+skinparam defaultFontName "Fira Sans"
+skinparam defaultFontSize 18
+skinparam defaultFontColor #243B53
+skinparam ArrowColor #627D98
+skinparam ArrowFontColor #627D98
+skinparam ArrowFontSize 16
+skinparam ArrowThickness 1
+skinparam roundCorner 10
+skinparam RectangleBorderColor #BCCCDC
+skinparam nodesep 40
+skinparam ranksep 45
+
+' -----------------------------------------------------------------------------
+' Sequence-diagrammen. De regels hierboven zijn geschreven voor ArchiMate; een
+' sequence-diagram valt daarbuiten terug op PlantUML-defaults (lila participant-
+' boxen, zwarte lijnen). Onderstaande blokken trekken de sequences in dezelfde
+' palet als de ArchiMate-diagrammen: lichtblauwe deelnemers, grijsblauwe lijnen.
+' -----------------------------------------------------------------------------
+skinparam sequence {
+  ArrowColor #627D98
+  ArrowThickness 1
+  LifeLineBorderColor #BCCCDC
+  LifeLineBackgroundColor #F0F4F8
+
+  ParticipantBackgroundColor #D6ECFA
+  ParticipantBorderColor #7BA7C7
+  ParticipantFontColor #243B53
+  ParticipantFontSize 18
+  ParticipantPadding 30
+
+  ActorBackgroundColor #D6ECFA
+  ActorBorderColor #7BA7C7
+  ActorFontColor #243B53
+  ActorFontSize 18
+
+  BoxBackgroundColor #F8FAFC
+  BoxBorderColor #BCCCDC
+  BoxFontColor #486581
+
+  GroupBackgroundColor #E8EEF4
+  GroupBorderColor #7BA7C7
+  GroupFontColor #243B53
+  GroupHeaderFontColor #243B53
+  GroupHeaderFontSize 15
+
+  DividerBackgroundColor #E8EEF4
+  DividerBorderColor #BCCCDC
+  DividerFontColor #243B53
+  DividerFontSize 15
+
+  MessageAlignment left
+}
+skinparam note {
+  BackgroundColor #FFF6E0
+  BorderColor #E0C068
+  FontColor #243B53
+  FontSize 15
+}
+' Deelnemers even breed en niet uitgerekt door lange labels.
+skinparam maxMessageSize 260

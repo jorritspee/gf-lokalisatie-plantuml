@@ -6,21 +6,29 @@ title Koppelvlak van de NVI
 skinparam nodesep 22
 skinparam ranksep 38
 
-Application_Component(client, "Lokalisatieclient")
+Application_Component(reg, "Localization\nRegistration Client")
+Application_Component(search, "Localization\nSearch Client")
 
 rectangle "Nationale Verwijsindex" as nvi {
   Application_Interface(oauth, "OAuth 2.0\ntoken-endpoint")
   Application_Interface(api, "Registratie- en\nlokalisatie-API\n(FHIR)")
 }
 
+Application_Component(custodian, "Custodian Server\n(FHIR-API van de bron)")
+
 rectangle "Nog in te vullen" as extern {
   Application_Component(gfautz, "GF Autorisatie")
 }
 
-Rel_Serving(oauth, client, "access token")
-Rel_Serving(api, client, "registreert,\nlokaliseert,\nverwijdert")
+Rel_Serving(oauth, reg, "access token")
+Rel_Serving(oauth, search, "access token")
+Rel_Serving(api, reg, "registreert,\nverwijdert,\neigen registraties")
+Rel_Serving(api, search, "lokaliseert")
 Rel_Serving(gfautz, api, "autoriseert\nde vraag")
+Rel_Serving(custodian, api, "autorisatiebeslissing\n(GF-LOC-5)")
 
-Lay_D(client, nvi)
+Lay_D(reg, nvi)
+Lay_D(search, nvi)
+Lay_D(nvi, custodian)
 Lay_R(nvi, extern)
 @enduml

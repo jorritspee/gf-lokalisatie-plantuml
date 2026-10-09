@@ -6,15 +6,19 @@ title Koppelvlak van de PRS
 skinparam nodesep 22
 skinparam ranksep 38
 
-Application_Component(client, "Lokalisatieclient")
+Application_Component(reg, "Localization\nRegistration Client")
+Application_Component(search, "Localization\nSearch Client")
 
 rectangle "Pseudoniemenregistratieservice" as prs {
   Application_Interface(oauth, "OAuth 2.0\ntoken-endpoint")
   Application_Interface(api, "Evaluate-endpoint\n(REST)")
 }
 
-Rel_Serving(oauth, client, "access token")
-Rel_Serving(api, client, "leidt pseudoniem af")
+Rel_Serving(oauth, reg, "access token")
+Rel_Serving(oauth, search, "access token")
+Rel_Serving(api, reg, "leidt pseudoniem af")
+Rel_Serving(api, search, "leidt pseudoniem af")
 
-Lay_D(client, prs)
+Lay_D(reg, prs)
+Lay_D(search, prs)
 @enduml

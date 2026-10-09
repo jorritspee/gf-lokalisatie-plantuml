@@ -6,21 +6,28 @@ title Koppelvlak bij de bronhouder
 skinparam nodesep 22
 skinparam ranksep 38
 
-Application_Component(client, "Lokalisatieclient")
+Application_Component(search, "Localization\nSearch Client")
+Application_Component(nvi, "Nationale\nVerwijsindex")
 
 rectangle "Bronhoudende zorgaanbieder" as bron {
   Application_Interface(oauth, "OAuth 2.0\ntoken-endpoint")
   Application_Interface(api, "Zorgaanbieder-\nendpoint\n(FHIR)")
+  Application_Component(custodian, "Custodian\nServer")
 }
 
 rectangle "Nog in te vullen" as extern {
   Application_Component(gfautz, "GF Autorisatie")
 }
 
-Rel_Serving(oauth, client, "access token")
-Rel_Serving(api, client, "levert (meta)gegevens")
+Rel_Serving(oauth, search, "access token")
+Rel_Serving(oauth, nvi, "access token")
+Rel_Serving(api, search, "levert (meta)gegevens")
+Rel_Serving(api, nvi, "HEAD: toestaan\nof weigeren (GF-LOC-5)")
+Rel_Composition(api, custodian, "")
+Rel_Serving(gfautz, custodian, "regels voor\nvermelding")
 Rel_Serving(gfautz, api, "autoriseert\nverstrekking")
 
-Lay_D(client, bron)
+Lay_D(search, bron)
+Lay_R(search, nvi)
 Lay_R(bron, extern)
 @enduml
