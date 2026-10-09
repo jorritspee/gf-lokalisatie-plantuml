@@ -23,7 +23,6 @@ rectangle "Bij de bronhoudende zorgaanbieder" as b {
 
 rectangle "Gedelegeerd aan een\nandere generieke functie" as g {
   Application_Component(adressering, "GF\nAdressering")
-  Application_Component(autorisatie, "GF\nAutorisatie")
 }
 
 Rel_Composition(xis, search, "")
@@ -34,10 +33,6 @@ Rel_Serving(endpoint, search, "4. levert\n(meta)gegevens")
 
 Rel_Serving(adressering, search, "endpoints")
 Rel_Serving(adressering, nvi, "zoekcontext,\nendpoint bron")
-Rel_Serving(autorisatie, search, "autoriseert")
-Rel_Serving(autorisatie, nvi, "autoriseert")
-Rel_Serving(autorisatie, custodian, "autoriseert")
-Rel_Serving(autorisatie, endpoint, "autoriseert")
 
 Lay_D(xis, search)
 Lay_D(g, l)

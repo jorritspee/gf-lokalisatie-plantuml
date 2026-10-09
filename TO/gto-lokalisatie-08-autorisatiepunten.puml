@@ -1,0 +1,24 @@
+@startuml
+!include <archimate/Archimate>
+!include ../publish/plantuml-style.puml
+title Autorisatiepunten in de keten
+
+skinparam nodesep 70
+skinparam ranksep 110
+
+Application_Component(autorisatie, "GF Autorisatie")
+
+Application_Component(search, "Localization\nSearch Client\n(raadpleger)")
+Application_Component(nvi, "Nationale\nVerwijsindex")
+Application_Component(custodian, "Custodian Server\n(bron)")
+Application_Interface(endpoint, "Zorgaanbieder-\nendpoint (bron)")
+
+Rel_Serving_Down(autorisatie, search, "1. vóór de vraag")
+Rel_Serving_Down(autorisatie, custodian, "2. bij lokalisatie")
+Rel_Serving_Down(autorisatie, endpoint, "3. bij verstrekking")
+
+Rel_Flow_Right(search, nvi, "zoekvraag")
+Rel_Flow_Right(nvi, custodian, "vraagt beslissing\n(GF-LOC-5)")
+Rel_Flow(search, endpoint, "haalt gegevens op")
+Lay_R(custodian, endpoint)
+@enduml
