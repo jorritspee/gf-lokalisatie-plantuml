@@ -1,0 +1,35 @@
+@startuml
+title Informatiemodel lokalisatievraag
+
+class "Lokalisatievraag" {
+}
+
+class Burgerpseudoniem {
+}
+
+class "Zoekcontext" {
+}
+
+class URA {
+}
+
+class Burger {
+}
+
+class "Datahoudende Zorgaanbieder" {
+}
+
+' Composition relationships (filled diamond on Lokalisatievraag side)
+"Lokalisatievraag"  *-- "1" Burgerpseudoniem : "bevat"
+"Lokalisatievraag" *-- "1" "Zoekcontext" : "bevat"
+
+' Relationships from Burgerpseudoniem
+Burgerpseudoniem --> Burger : "verwijst naar"
+
+' Relationship from Zoekcontext
+"Zoekcontext" *-- "0..n" URA : "bevat"
+Zoekcontext --> "0..n" "LRZa key-value paar " : "bevat"
+
+URA --> "Datahoudende Zorgaanbieder" : "verwijst naar"
+
+@enduml
