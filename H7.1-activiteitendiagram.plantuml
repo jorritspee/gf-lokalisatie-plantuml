@@ -1,14 +1,14 @@
 @startuml
-|Radioloog|
+|Zorgverlener|
 start
-:1. Voert een CT-scan uit;
-|Zorginformatiesysteem|
+:1. Voert een onderzoek uit en \nregistreert in XIS;
+|Zorginformatiesysteem \n(component Lokalisatie-client)|
 :2a. Vraagt pseudoniem aan;
 |PRS|
 :2b. Levert pseudonimiem;
-|Zorginformatiesysteem|
-:3. Registreert lokalisatierecord;
+|Zorginformatiesysteem \n(component Lokalisatie-client)|
+:3. Registreert lokalisatie-record;
 |NVI|
-:4. Het lokalisatierecord is nu opvraagbaar \nvoor andere zorgverleners.;
+:4. Het lokalisatie-record is nu opvraagbaar \nvoor andere zorgverleners.;
 stop
 @enduml

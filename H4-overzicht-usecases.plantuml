@@ -1,16 +1,49 @@
 @startuml usecases
-left to right direction
-actor "Data-aanbieder" as DataAanbieder
-package "Generieke Functie Lokalisatie" {
-  usecase "UC-GFL-04. \nVerwijderen van lokalisatierecords" as UCGFL04
-  usecase "UC-GFL-03. \nOpvragen van eigen lokalisatierecords" as UCGFL03
-  usecase "UC-GFL-02. \nOpvragen lokalisatierecords" as UCGFL02
-  usecase "UC-GFL-01. \nRegistreren lokalisatierecord" as UCGFL01
-}
-actor "Eindgebruiker" as Eindgebruiker
 
-:DataAanbieder: -down-> UCGFL01
-:Eindgebruiker: -up-> UCGFL02
-:DataAanbieder: -down-> UCGFL03
-:DataAanbieder: -down-> UCGFL04
+actor "Eindgebruiker" as Eindgebruiker
+actor "Bevragende \nZorgaanbieder" as BevragendeZorgaanbieder
+
+package "Generieke Functie Lokalisatie" {
+  actor "Lokalisatie-client" as LokalisatieClient <<systeem>>
+  
+  package "NVI"{
+    usecase "UC-GFL-01. \nRegistreren lokalisatie-records" as UCGFL01
+    usecase "UC-GFL-02. \nOpvragen lokalisatie-records" as UCGFL02
+    usecase "UC-GFL-03. \nOpvragen van eigen lokalisatie-records" as UCGFL03
+    usecase "UC-GFL-04. \nVerwijderen van lokalisatie-records" as UCGFL04
+    usecase "UC-GFL-05. \nBulk-update van lokalisatie-records" as UCGFL05
+
+    UCGFL01 -[hidden]right-> UCGFL02
+    UCGFL02 -[hidden]right-> UCGFL03
+    UCGFL03 -[hidden]right-> UCGFL04
+    UCGFL04 -[hidden]right-> UCGFL05
+  }
+  actor "Lokalisatie-accordering-server" as LokalisatieAccServer <<systeem>>
+  actor "Lokalisatie-client" as LokalisatieClient2 <<systeem>>
+
+  :LokalisatieAccServer: -[hidden]right-> LokalisatieClient2
+}
+
+actor "Datahoudende \nZorgaanbieder" as DatahoudendeZorgAanbieder
+
+:Eindgebruiker: -down-> LokalisatieClient : "gebruikt"
+:LokalisatieClient: -up-> BevragendeZorgaanbieder : "handelt namens"
+:Eindgebruiker: -right-> BevragendeZorgaanbieder : "handelt in context van"
+
+
+:LokalisatieClient: -[hidden]down-> UCGFL01
+:LokalisatieClient: -[norank]down-> UCGFL02
+:LokalisatieClient: -[hidden]down-> UCGFL03
+
+:LokalisatieClient2: -up-> UCGFL01
+:LokalisatieClient2: -up-> UCGFL03
+:LokalisatieClient2: -up-> UCGFL04
+:LokalisatieClient2: -up-> UCGFL05
+
+UCGFL01 -[hidden]down-> LokalisatieAccServer
+UCGFL02 -[norank]down-> LokalisatieAccServer
+
+:DatahoudendeZorgAanbieder: -up-> LokalisatieClient2 : "gebruikt"
+:LokalisatieAccServer: -down-> DatahoudendeZorgAanbieder : "handelt namens"
+
 @enduml

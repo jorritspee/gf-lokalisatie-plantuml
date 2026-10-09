@@ -1,17 +1,21 @@
 @startuml
-|Radioloog|
+|Zorgverlener (Eindgebruiker)|
 start
 :1. Opent het patiëntdossier in het XIS;
-|Zorginformatiesysteem|
-:2a. Vraagt pseudoniem aan;
+:2. Opent scherm "patient-samenvatting";
+|Zorginformatiesysteem \n(component Lokalisatie-client)|
+:3a. Vraagt pseudoniem aan;
 |PRS|
-:2b. Levert pseudonimiem;
-|Zorginformatiesysteem|
-:3. Vraagt lokalisatierecords op;
+:3b. Levert pseudonimiem;
+|Zorginformatiesysteem \n(component Lokalisatie-client)|
+:4. Vraagt lokalisatie-records op;
 |NVI|
-:4. Levert lokalisatierecords op; 
-|Zorginformatiesysteem|
-:5. Toont data-aanbieders die beelden hebben.;
-|Radioloog|
+:5. Levert lokalisatie-records op; 
+|Zorginformatiesysteem \n(component Lokalisatie-client)|
+:6a. Levert lijst van zorgaanbieders op;
+|Zorginformatiesysteem \n(overige componenten)|
+:6b. haalt data bij zorgaanbieders op;
+:7. Toont patiënt-samenvatting samengesteld \nuit data van verschillende zorgaanbieders.;
+|Zorgverlener (Eindgebruiker)|
 stop
 @enduml

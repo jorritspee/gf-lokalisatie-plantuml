@@ -1,0 +1,58 @@
+@startuml
+title Informatiemodel lokalisatie-record
+
+class "Lokalisatie-record" {
+}
+
+class Burgerpseudoniem {
+}
+
+class URA {
+}
+
+class "Systeem-identifier" {
+}
+
+class "Registrerend Systeem" {
+}
+
+class Burger {
+}
+
+class "Datahoudende Zorgaanbieder" {
+}
+
+' Composition relationships (filled diamond on Lokalisatie-record side)
+"Lokalisatie-record" ||--|| Burgerpseudoniem
+"Lokalisatie-record" ||--|| URA
+"Lokalisatie-record" ||--|| "Systeem-identifier"
+
+' Relationships from Burgerpseudoniem
+Burgerpseudoniem --> Burger : verwijst naar
+
+' Relationship from URA
+URA ..> "Datahoudende Zorgaanbieder" : identificeert
+
+' Relationship from "Systeem-identifier"
+"Systeem-identifier" --> "Registrerend Systeem" : identificeert
+
+note right of "Lokalisatie-record"
+    De combinatie van bronhouder, burgerpseudoniem en registrerend
+    systeem is uniek. Een record wordt niet gewijzigd: corrigeren is
+    verwijderen en opnieuw registreren.
+    Het pseudoniem wordt afgeleid uit het BSN.
+end note
+
+' Styling
+skinparam class {
+    BackgroundColor #D4EEFF
+    BorderColor #6B9CC7
+}
+
+skinparam packageStyle rectangle
+
+' Note background
+skinparam noteBackgroundColor #FFF8DC
+skinparam noteBorderColor #D3D3D3
+
+@enduml
