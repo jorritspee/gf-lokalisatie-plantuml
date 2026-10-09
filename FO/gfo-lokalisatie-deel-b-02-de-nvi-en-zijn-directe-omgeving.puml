@@ -1,14 +1,12 @@
 @startuml
-!include <archimate/Archimate>
-!include ../publish/plantuml-style.puml
 title Positie van de NVI
 
-Business_Process(reg, "Registreren")
-Business_Process(lok, "Lokaliseren")
-Application_Component(nvi, "Nationale Verwijsindex")
-Application_DataObject(record, "Lokalisatierecord\n(bron, pseudoniem,\nsysteem)")
+rectangle "Registreren [functie]" as reg
+rectangle "Lokaliseren [functie]" as lok
+component "Nationale Verwijsindex (NVI) [component]" as nvi
+database "Lokalisatie-record\n(bron, pseudoniem,\nsysteem) [object]" as record
 
-Rel_Serving(nvi, reg, "")
-Rel_Serving(nvi, lok, "")
-Rel_Access(nvi, record, "beheert")
+reg ..up..> nvi : gebruikt
+lok ..up..> nvi : gebruikt
+nvi --down--> record : beheert
 @enduml

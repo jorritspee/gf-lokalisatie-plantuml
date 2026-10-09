@@ -1,37 +1,32 @@
 @startuml
-!include ../publish/plantuml-style.puml
-title UC-05. Raadplegen van de eigen registraties
+title UC-NVI-05. Raadplegen van de eigen registraties
 
-participant "Bronsysteem\n(XIS / PACS)" as XIS
+participant "XIS (component Lokalisatie-client)" as XIS
 participant "PRS" as PRS
 participant "NVI" as NVI
 
-alt voor één patiënt en datacategorie
-  XIS -> PRS: vraag pseudoniem\n(BSN, datacategorie)
+alt voor één burger
+  XIS -> PRS: vraag pseudoniem\n(BSN)
   activate PRS
   PRS --> XIS: pseudoniem
   deactivate PRS
-  XIS -> NVI: vraag eigen registraties\n(pseudoniem)
-  note over XIS
-    Per datacategorie een eigen pseudoniem,
-    dus per categorie een eigen vraag.
-  end note
-else voor alle patiënten
-  XIS -> NVI: vraag alle eigen registraties
+  XIS -> NVI: vraag eigen registraties\n(pseudoniem, systeem-identifier)
+else voor alle burgers
+  XIS -> NVI: vraag alle eigen registraties\n(systeem-identifier)
 end
 
 activate NVI
 note over NVI
   De lijst is beperkt tot de registraties
-  van de eigen bron. Het pseudoniem wordt
-  niet teruggegeven.
+  van het XIS met systeem-identifier. 
+  Pseudoniem zijn geen onderdeel van response.
 end note
 NVI --> XIS: de eigen registraties
 deactivate NVI
 
 note over XIS
   Bij een afwijking: corrigeren via
-  UC-04 (verwijderen) en UC-02
+  UC-NVI-04 (verwijderen) en UC-NVI-02
   (opnieuw registreren).
 end note
 @enduml

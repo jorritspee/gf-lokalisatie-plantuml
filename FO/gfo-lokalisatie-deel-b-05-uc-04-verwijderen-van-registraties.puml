@@ -1,42 +1,36 @@
 @startuml
-!include ../publish/plantuml-style.puml
-title UC-04. Verwijderen van registraties
+title UC-NVI-04. Verwijderen van registraties
 
-participant "Bronsysteem\n(XIS / PACS)" as XIS
+participant "XIS \n(component Lokalisatie-client)" as XIS
 participant "PRS" as PRS
 participant "NVI" as NVI
 
 note over XIS
-  Aanleiding: toestemming ingetrokken,
-  bewaartermijn verstreken, of correctie
+  Aanleiding: toestemming voor registatie lokalisatie-record 
+  in NVI ingetrokken, bewaartermijn verstreken, of correctie
   van een foutieve registratie.
 end note
 
-alt verwijderen voor één patiënt en datacategorie
-  XIS -> PRS: vraag pseudoniem\n(BSN, datacategorie)
+alt verwijderen voor één burger
+  XIS -> PRS: vraag pseudoniem\n(BSN)
   activate PRS
   PRS --> XIS: pseudoniem
   deactivate PRS
-  XIS -> NVI: verwijder (pseudoniem)
-  note over XIS
-    Betreft meer dan één datacategorie,
-    dan herhaalt dit zich per categorie:
-    elk pseudoniem staat op zichzelf.
-  end note
-else alle registraties van de bron
-  XIS -> NVI: verwijder alle registraties\nvan deze bron
+  XIS -> NVI: verwijder (pseudoniem, systeem-identifier)
+else alle registraties van XIS
+  XIS -> NVI: verwijder alle registraties\nvan XIS (systeem-identifier)
 end
 
 activate NVI
 note over NVI
   De NVI verwijdert uitsluitend
-  registraties van de eigen bron.
+  registraties van het eigen XIS.
 end note
 NVI --> XIS: bevestiging
 deactivate NVI
 
 note over NVI
-  De verwijderde registraties zijn niet
-  meer vindbaar voor raadplegers.
+  De verwijderde registraties zijn 
+  verwijderd en niet meer vindbaar.
 end note
 @enduml

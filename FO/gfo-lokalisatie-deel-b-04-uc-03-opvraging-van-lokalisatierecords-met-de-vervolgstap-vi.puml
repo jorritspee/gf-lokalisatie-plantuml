@@ -1,42 +1,55 @@
 @startuml
-!include ../publish/plantuml-style.puml
-title UC-03. Lokaliseren van gegevens
+title UC-NVI-03. Lokaliseren van gegevens
 
-actor "Zorgverlener" as ZV
-participant "XIS\n(lokalisatieclient)" as XIS
+box "Bevragende Zorgaanbieder"
+  actor "Eindgebruiker" as ZV
+  participant "XIS" as XIS
+end box
+
 participant "PRS" as PRS
 participant "NVI" as NVI
-participant "GF Adressering" as ADR
-participant "Bronhouder\n(zorgaanbieder-endpoint)" as BRON
+participant "Generieke functie Adressering" as ADR
 
-ZV -> XIS: opent dossier,\nkiest datacategorie
+box "Datahoudende Zorgaanbieder"
+  participant "Lokalisatie-Accordering-service" as LAs
+  participant "Zorgaanbieder-endpoint" as BRON
+end box
+
+ZV -> XIS: opent dossier
 activate XIS
+XIS -> XIS: bepaalt zoekcontext
 
-XIS -> PRS: vraag pseudoniem\n(BSN, datacategorie)
+XIS -> PRS: vraag pseudoniem\n(BSN)
 activate PRS
 PRS --> XIS: pseudoniem
 deactivate PRS
 
-XIS -> NVI: lokaliseer (pseudoniem,\noptioneel filter op type zorgaanbieder)
+XIS -> NVI: lokalisatievraag \n(pseudoniem, zoekcontext)
 activate NVI
 
 note over NVI
-  De NVI controleert of de raadpleger
-  een aangesloten zorgaanbieder is.
+  De NVI controleert autorisatie van XIS.
 end note
 
 alt registraties gevonden
-  NVI --> XIS: lijst bronhouders
+  NVI <--> ADR: maken lijst Datahoudende Zorgaanbieders \ndie voldoen aan zoekcontext
+  loop per Datahoudende Zorgaanbieder die voldoet aan zoekcontext
+    NVI -> LAs: vraag accordering voor delen \nlokalisatie-record met Bevragende Zorgaanbieder
+    activate LAs
+    LAs --> NVI: accordering (ja of nee)
+    deactivate LAs
+  end
+  NVI --> XIS: lijst Datahoudende Zorgaanbieders \ndie hebben geaccordeerd
   deactivate NVI
-  XIS --> ZV: toon gevonden bronhouders
+'  XIS --> ZV: toon gevonden bronhouders
 
   group Vervolgstappen tot en met het resultaatscherm
     XIS -> ADR: zoek endpoints op\n(gedelegeerd aan GF Adressering)
     activate ADR
-    ADR --> XIS: endpoints per bronhouder
+    ADR --> XIS: endpoints per Datahoudende Zorgaanbieder
     deactivate ADR
 
-    loop per gevonden bronhouder
+    loop per gevonden Datahoudende Zorgaanbieder
       XIS -> BRON: haal (meta)gegevens op met BSN\n(FHIR-URL)
       activate BRON
       BRON --> XIS: (meta)gegevens
@@ -49,10 +62,10 @@ alt registraties gevonden
       voor de NVI en buiten die context betekenisloos.
     end note
 
-    XIS --> ZV: toon gegevens per zorgaanbieder
+    XIS --> ZV: toon gegevens per Datahoudende Zorgaanbieder
   end
 
-else geen registraties
+else geen registraties  \n-die voldoen aan zoekcontext; én \n-die zijn geaccordeerd door Datahoudende Zorgaanbieder
   XIS --> ZV: leeg resultaat
 end
 deactivate XIS

@@ -13,6 +13,12 @@ class "Zoekcontext" {
 class URA {
 }
 
+class Organisatietype{}
+
+class EndpointDataCategorie{}
+
+class ZorgdienstType{}
+
 class Burger {
 }
 
@@ -27,8 +33,10 @@ class "Datahoudende Zorgaanbieder" {
 Burgerpseudoniem --> Burger : "verwijst naar"
 
 ' Relationship from Zoekcontext
-"Zoekcontext" *-- "0..n" URA : "bevat"
-Zoekcontext --> "0..n" "LRZa key-value paar " : "bevat"
+Zoekcontext *-- "0..n" URA : "bevat"
+Zoekcontext --> "0..n" Organisatietype : "bevat"
+Zoekcontext --> "0..n" EndpointDataCategorie : "bevat"
+Zoekcontext --> "0..n" ZorgdienstType : "bevat"
 
 URA --> "Datahoudende Zorgaanbieder" : "verwijst naar"
 
