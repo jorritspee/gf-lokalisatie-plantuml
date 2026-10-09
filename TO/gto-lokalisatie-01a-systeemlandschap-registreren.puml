@@ -1,0 +1,25 @@
+@startuml
+!include <archimate/Archimate>
+!include ../publish/plantuml-style.puml
+title Systeemlandschap GF Lokalisatie: registreren
+
+skinparam nodesep 40
+skinparam ranksep 60
+
+rectangle "Bij de bronhoudende zorgaanbieder" as b {
+  Application_Component(bronxis, "XIS / ECD / PACS\nvan de bronhouder")
+  Application_Component(reg, "Localization\nRegistration Client")
+}
+
+rectangle "Landelijke voorzieningen" as l {
+  Application_Component(prs, "Pseudoniemen-\nregistratie-\nservice")
+  Application_Component(nvi, "Nationale\nVerwijsindex")
+}
+
+Rel_Composition(bronxis, reg, "")
+Rel_Serving(reg, prs, "vraagt\npseudoniem")
+Rel_Serving(reg, nvi, "registreert,\nverwijdert,\nreconciliëert")
+
+Lay_D(bronxis, reg)
+Lay_D(b, l)
+@enduml

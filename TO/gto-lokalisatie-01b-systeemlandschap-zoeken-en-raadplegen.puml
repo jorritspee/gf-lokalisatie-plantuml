@@ -1,0 +1,47 @@
+@startuml
+!include <archimate/Archimate>
+!include ../publish/plantuml-style.puml
+title Systeemlandschap GF Lokalisatie: zoeken en raadplegen
+
+skinparam nodesep 40
+skinparam ranksep 70
+
+rectangle "Bij de raadplegende zorgaanbieder" as z {
+  Application_Component(xis, "XIS / ECD /\nPACS")
+  Application_Component(search, "Localization\nSearch Client")
+}
+
+rectangle "Landelijke voorzieningen" as l {
+  Application_Component(prs, "Pseudoniemen-\nregistratie-\nservice")
+  Application_Component(nvi, "Nationale\nVerwijsindex")
+}
+
+rectangle "Bij de bronhoudende zorgaanbieder" as b {
+  Application_Component(custodian, "Custodian\nServer")
+  Application_Interface(endpoint, "Zorgaanbieder-\nendpoint")
+}
+
+rectangle "Gedelegeerd aan een\nandere generieke functie" as g {
+  Application_Component(adressering, "GF\nAdressering")
+  Application_Component(autorisatie, "GF\nAutorisatie")
+}
+
+Rel_Composition(xis, search, "")
+Rel_Serving(search, prs, "1. vraagt\npseudoniem")
+Rel_Serving(search, nvi, "2. lokaliseert")
+Rel_Serving(custodian, nvi, "3. autorisatie-\nbeslissing\n(GF-LOC-5)")
+Rel_Serving(endpoint, search, "4. levert\n(meta)gegevens")
+
+Rel_Serving(adressering, search, "endpoints")
+Rel_Serving(adressering, nvi, "zoekcontext,\nendpoint bron")
+Rel_Serving(autorisatie, search, "autoriseert")
+Rel_Serving(autorisatie, nvi, "autoriseert")
+Rel_Serving(autorisatie, custodian, "autoriseert")
+Rel_Serving(autorisatie, endpoint, "autoriseert")
+
+Lay_D(xis, search)
+Lay_D(g, l)
+Lay_R(z, l)
+Lay_R(l, b)
+Lay_D(custodian, endpoint)
+@enduml
